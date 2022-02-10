@@ -83,3 +83,14 @@ footer>p{
     background-color: black;
     color: white;
 }
+
+.p_subject {
+    display: inline;
+}
+
+ul li {
+    list-style-type: none;
+    display: inline-block;
+    width: 200px;
+}
+

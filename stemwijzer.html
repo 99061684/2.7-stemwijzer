@@ -17,11 +17,48 @@
 		</div>
 
 		<div id="stemWijzer">
-			<button id="btnStart" onclick="create_stemwijzer()">Start</button>
+			<img src="images\logo_stemwijzer2.jpg" alt="logo stemwijzer">
+			<h1>Stemwijzer 2de kamer 2022</h1>
+			<p>Test uw politieke voorkeur aan de hand van 30 stellingen</p>
+
+			<div id="questions" style="display: none;">
+				<button id="terug"><-</button>
+				<h1 id="title"></h1>
+				<p id="stelling"></p>
+
+				<div id="buttons">
+					<button id="btnEens" class="optionbutton">EENS</button>
+					<button id="btnGeen" class="optionbutton">GEEN VAN BEIDE</button>
+					<button id="btnOneens" class="optionbutton">ONEENS</button>
+				</div>
+				<button id="volgende">Sla deze vraag over -></button>
+			</div>
+			<div id="start">
+				<button id="btnStart" onclick="create_stemwijzer()">Start</button>
+				<button id="btnInstellingen" onclick="create_instellingen()">Instellingen</button>
+			</div>
+			<div id="instellingen" style="display: none;">
+				<ul id="list_subjects">
+
+				</ul>
+			</div>
+
+			<div id="uitslag" style="display: none;">
+				<a href="stemwijzer.html">Restart test</a>
+				<select name="uitslag_type" id="uitslag_type">
+					<option value="option_1" selected>alle partijen</option>
+					<option value="option_2">seculaire partijen</option>
+					<option value="option_3">grote patrijen</option>
+					<option value="option_4">kleine partijen</option>
+				</select>
+				<ol id="list_results">
+
+				</ol>
+			</div>
         </div>
 	
 		<footer>
-			<p>&#169; 2021 - Bas Verdoorn</p>
+			<p>&#169; 2022 - Bas Verdoorn</p>
 		</footer>
     </div>
     
