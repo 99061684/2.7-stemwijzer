@@ -12,8 +12,9 @@ const stelling = document.getElementById("stelling");
 const uitslag_type = document.getElementById("uitslag_type");
 const list_results = document.getElementById("list_results");
 
-const id_pagina_elementen = ["title", "stelling", "buttons", "btnEens", "btnGeen", "btnOneens", "volgende", "terug", "uitslag"];
+const buttons = ["btnEens", "btnGeen", "btnOneens", "volgende", "terug"];
 const posible_answers = {"pro":"eens", "none":"geen van beiden", "contra":"oneens"};
+const posible_positions = {"pro":"voor", "none":"geen mening", "contra":"tegen"};
 var answers = [];
 var vraag_nr = 0;
 var instellingen_made = false;
@@ -28,24 +29,42 @@ function create_stemwijzer() { //creëert de stemwijzer
     questions.style.display = "block"; 
 
     uitslag_type.onchange = function() {toon_uitslag();};
-    console.log(uitslag_type);
 
     if (answers.length == 0) {
         for (let index = 0; index < subjects.length; index++) {
-            answers[index]= new subjectanswer(posible_answers.pro, 1);
+            answers[index]= new subjectanswer(null, 1);
         }
     }
-
-    // vraag_nr = subjects.length - 2;
 
     title.innerHTML = (vraag_nr +1).toString() + ". " + subjects[vraag_nr].title;
     stelling.innerHTML = subjects[vraag_nr].statement;
 
-    document.getElementById("btnEens").onclick = function() {vragen("btnEens");};
-    document.getElementById("btnGeen").onclick = function() {vragen("btnGeen");};
-    document.getElementById("btnOneens").onclick = function() {vragen("btnOneens");};
-    document.getElementById("volgende").onclick = function() {vragen("volgende");};
-    document.getElementById("terug").onclick = function() {vragen("terug");};
+    for (let index = 0; index < buttons.length; index++) {
+        document.getElementById(buttons[index]).onclick = function() {vragen(buttons[index]);};
+    }
+
+    for (let i=0; i< parties.length - 1; i++) { 
+        let element = null;       
+        create_element("button", "buttons2", "mening" + i, parties[i].name, "w3-bar-item w3-button mening_buttons"); 
+
+        var checkpartij = subjects[vraag_nr].parties.find((partij2) => partij2.name==parties[i].name);
+
+        create_element("div", "meningen", parties[i].name, null, "w3-container w3-display-container mening"); 
+        create_element("span", parties[i].name, "span_close"+i, "&times;", "w3-button w3-large w3-display-topright");
+        create_element("h2", parties[i].name, "h2_mening"+i, posible_positions[checkpartij.position]);
+        create_element("p", parties[i].name, "p_mening"+i, checkpartij.opinion);
+
+
+        element = document.getElementById("span_close"+i);
+        element.onclick = function() {
+            this.parentElement.style.display='none';
+        };
+
+        element = document.getElementById("mening" + i);
+        element.onclick = function() {
+            openCity(event,parties[i].name);
+        };
+    }
 }
 
 function create_instellingen() {
@@ -60,7 +79,8 @@ function create_instellingen() {
         for (i=0; i< subjects.length; i++) {        
             create_element("li", "list_subjects", "subject" + i, null, null);
             create_element("INPUT", "subject" + i, "p_checkbox" + i, null, null, "checkbox"); 
-            create_element("p", "subject" + i, "p_subject" + i, subjects[i].title, "p_subject");
+            create_element("LABEL", "subject" + i, "p_subject" + i, subjects[i].title, "p_subject", null, null, null, "p_checkbox" + i);
+            
             var checkbox = document.getElementById("p_checkbox" + i);
             checkbox.onclick = function() {
                 var nr = this.id.replace("p_checkbox", "");
@@ -77,8 +97,8 @@ function create_instellingen() {
 
 //laat elke keer de vraag weergeven en vult de uitslag in. 
 function vragen(button_id) {
-    var title_text = document.getElementById(id_pagina_elementen[0]);
-    var vraag_text = document.getElementById(id_pagina_elementen[1]);
+    var title_text = document.getElementById("title");
+    var vraag_text = document.getElementById("stelling");
 
     if (button_id == "btnEens") { 
         answers[vraag_nr].answer = posible_answers.pro;
@@ -96,22 +116,26 @@ function vragen(button_id) {
             title_text.innerHTML = (vraag_nr +1).toString() + ". " + subjects[vraag_nr].title;
             vraag_text.innerHTML = subjects[vraag_nr].statement;
         } else {
-            reset();
+            window.location.reload(true);
         }
     } else {
         vraag_nr++;
-        if (vraag_nr === (subjects.length - 1)) {
+        if (vraag_nr <= (subjects.length - 1)) {
             title_text.innerHTML = (vraag_nr +1).toString() + ". " + subjects[vraag_nr].title;
             vraag_text.innerHTML = subjects[vraag_nr].statement;
-        } else if (vraag_nr < subjects.length) {
-            title_text.innerHTML = (vraag_nr +1).toString() + ". " + subjects[vraag_nr].title;
-            vraag_text.innerHTML = subjects[vraag_nr].statement;
+
+            for (let index = 0; index < (parties.length - 1); index++) {
+                let checkpartij = subjects[vraag_nr].parties.find((partij2) => partij2.name==parties[index].name);
+                document.getElementById("h2_mening"+index).innerHTML = posible_positions[checkpartij.position];
+                document.getElementById("p_mening"+index).innerHTML = checkpartij.opinion;
+            }
         } else {
             toon_uitslag(); 
         } 
     }
 
     if (vraag_nr < subjects.length) {
+
         if (answers[vraag_nr].answer == null) {
             set_chosen(null);
         } else if (answers[vraag_nr].answer == posible_answers.pro) {
@@ -131,39 +155,14 @@ function set_chosen(chosenid) {
         if (element.classList.contains("chosen")) {
             element.classList.remove("chosen");
         }
-        if (!element.classList.contains("optionbutton")) {
-            element.classList.add("optionbutton");
-        }
     });
-    // if (document.getElementById("btnEens").classList.contains("chosen")) {
-    //     document.getElementById("btnEens").classList.remove("chosen");
-    // }
-    // if (document.getElementById("btnGeen").classList.contains("chosen")) {
-    //     document.getElementById("btnGeen").classList.remove("chosen");
-    // }
-    // if (document.getElementById("btnOneens").classList.contains("chosen")) {
-    //     document.getElementById("btnOneens").classList.remove("chosen");
-    // }
 
-    // if (!document.getElementById("btnEens").classList.contains("optionbutton")) {
-    //     document.getElementById("btnEens").classList.add("optionbutton");
-    // }
-    // if (!document.getElementById("btnGeen").classList.contains("optionbutton")) {
-    //     document.getElementById("btnGeen").classList.add("optionbutton");
-    // }
-    // if (!document.getElementById("btnOneens").classList.contains("optionbutton")) {
-    //     document.getElementById("btnOneens").classList.add("optionbutton");
-    // }
-
-    if (chosenid != null && chosenid <= 5 && chosenid >= 3) {
+    if (chosenid != null) {
         document.getElementById(chosenid).classList.add("chosen");
-        document.getElementById(chosenid).classList.remove("optionbutton");
-        console.log(document.getElementById(chosenid).classList);
     }
 }
 
 function toon_uitslag() {
-    console.log("toon_uitslag");
     questions.style.display = "none";
     uitslag.style.display = "block";
 
@@ -188,7 +187,7 @@ function toon_uitslag() {
             }); 
             result2 = result2.concat(result1);
         }
-    }
+    } 
 
     if (filter == "seclulier=true") {
         result2 = result2.filter(partij => {  
@@ -223,10 +222,12 @@ function toon_uitslag() {
             create_element("li", "list_results", "result" + i, null, null);
             create_element("p", "result" + i, "p_result" + i, result2[i].name + ", aantal keer eens: "+ result2[i].occurrence+"");
         }
+    } else {
+        create_element("p", "uitslag", "noresult", "geen resultaten.");
     }
 }
 
-function create_element(element_create, id_append, id_element, text, classname, type, placeholder, value) { //creëert elementen
+function create_element(element_create, id_append, id_element, text, classname, type, placeholder, value, forid) { //creëert elementen
     var element = document.createElement(element_create);
     element.id = id_element; 
     if (element_create == "button") {
@@ -237,17 +238,20 @@ function create_element(element_create, id_append, id_element, text, classname, 
     if (text !== "" && text !== null) {
         element.innerHTML = text; 
     }
-    if (type !== "" && type !== null) {
+    if (type !== "" && type !== null && typeof type !== 'undefined') {
         element.type = type; 
     }    
-    if (placeholder !== "" && placeholder !== null) {
+    if (placeholder !== "" && placeholder !== null && typeof placeholder !== 'undefined') {
         element.placeholder = placeholder;
     } 
-    if (classname !== "" && classname !== null) {
+    if (classname !== "" && classname !== null && typeof classname !== 'undefined') {
         element.className = classname;
     } 
     if (value !== "" && value !== null && typeof value !== 'undefined') {
         element.value = value;
+    } 
+    if (forid !== "" && forid !== null && typeof forid !== 'undefined') {
+        element.setAttribute("for", forid);
     } 
     if (id_append == "body") {
         document.body.appendChild(element);
@@ -284,6 +288,24 @@ function findOcc(arr, key){
 
 function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
+}
+
+function openCity(evt, partijname) {
+    if (document.getElementById(partijname) !== null) {
+        var x = document.getElementsByClassName("mening");
+        for (let i = 0; i < x.length; i++) {
+            x[i].style.display = "none";  
+            x[i].className.replace(" w3-red", "");
+        }
+        var y = document.getElementsByClassName("mening_buttons");
+
+        for (let j = 0; j < y.length; j++) {
+            y[j].className = y[j].className.replace(" w3-red", "");
+        }
+          
+        document.getElementById(partijname).style.display = "block";  
+        evt.currentTarget.className += " w3-red";
+    }
 }
 
 class subjectanswer {

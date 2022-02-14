@@ -24,6 +24,39 @@ h1 {
     font-family: 'Noto Sans', sans-serif;
 }
 
+ul li {
+    list-style-type: none;
+    display: inline-block;
+    width: 300px;
+}
+
+#buttons button {
+    width: 170px;
+    font-size: 14px;
+}
+
+#questions {
+    margin: 0 auto;
+    width: 700px;
+}
+
+#buttons {
+    margin: 0 auto;
+    width: fit-content;
+}
+
+#buttons2 {
+    margin-top: 10px;
+}
+
+#title {
+   display: inline;
+}
+
+#volgende {
+    float: right;
+}
+
 footer {
     background-color: #36b2d8;
     grid-column: 1 / 5;
@@ -75,22 +108,15 @@ footer>p{
 }
 
 .chosen {
-    background-color: lightblue;
-    color: black;
-}
-
-.optionbutton {
-    background-color: black;
-    color: white;
+    background-color: lightblue !important;
+    color: black !important;
 }
 
 .p_subject {
     display: inline;
 }
 
-ul li {
-    list-style-type: none;
-    display: inline-block;
-    width: 200px;
+.mening {
+    display:none;
 }
 

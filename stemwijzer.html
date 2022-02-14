@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Toets Stemwijzer - HOME</title>
+	<link rel="stylesheet" type="text/css" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
@@ -22,20 +23,27 @@
 			<p>Test uw politieke voorkeur aan de hand van 30 stellingen</p>
 
 			<div id="questions" style="display: none;">
-				<button id="terug"><-</button>
+				<button id="terug" class="w3-button w3-padding-small w3-light-grey w3-round-xxlarge"><-</button>
 				<h1 id="title"></h1>
 				<p id="stelling"></p>
 
 				<div id="buttons">
-					<button id="btnEens" class="optionbutton">EENS</button>
-					<button id="btnGeen" class="optionbutton">GEEN VAN BEIDE</button>
-					<button id="btnOneens" class="optionbutton">ONEENS</button>
+					<button id="btnEens" class="w3-button w3-padding-small w3-black w3-round">EENS</button>
+					<button id="btnGeen" class="w3-button w3-padding-small w3-black w3-round">GEEN VAN BEIDE</button>
+					<button id="btnOneens" class="w3-button w3-padding-small w3-black w3-round">ONEENS</button>
+					<button id="volgende" class="w3-button w3-padding-small w3-round">Sla deze vraag over -></button>
 				</div>
-				<button id="volgende">Sla deze vraag over -></button>
+
+				<div id="buttons2" class="w3-bar w3-black">
+				
+				</div>
+				<div id="meningen">
+
+				</div>
 			</div>
 			<div id="start">
-				<button id="btnStart" onclick="create_stemwijzer()">Start</button>
-				<button id="btnInstellingen" onclick="create_instellingen()">Instellingen</button>
+				<button id="btnStart" class="w3-button w3-padding-small w3-black w3-round" onclick="create_stemwijzer()">Start</button>
+				<button id="btnInstellingen" class="w3-button w3-padding-small w3-black w3-round" onclick="create_instellingen()">Instellingen</button>
 			</div>
 			<div id="instellingen" style="display: none;">
 				<ul id="list_subjects">
@@ -62,7 +70,7 @@
 		</footer>
     </div>
     
-	<script src="http://stemwijzer.dvc-icta.nl/data.js"></script>
+	<script src="js/data.js"></script>
     <script src="js/stemwijzer.js"></script>
 </body>
 </html>
