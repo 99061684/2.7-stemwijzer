@@ -20,7 +20,7 @@ var vraag_nr = 0;
 var instellingen_made = false;
 var filter = "";
 
-var results_amount = 10;
+var results_amount = 30;
 
 //creëert elementen voor op de html pagina
 function create_stemwijzer() { //creëert de stemwijzer
